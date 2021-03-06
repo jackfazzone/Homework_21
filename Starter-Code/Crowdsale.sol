@@ -17,7 +17,7 @@ contract PupperCoinSale is Crowdsale, MintedCrowdsale, CappedCrowdsale, TimedCro
         uint256 open,
         uint256 close,
         uint256 goal,
-        PupperCoin token
+        PupperCoin token_address
     )
         // Citation: https://ethereum.stackexchange.com/questions/30979/vm-exception-while-processing-transaction-invalid-opcode-when-deploying-cont
         RefundableCrowdsale(18)
@@ -29,7 +29,7 @@ contract PupperCoinSale is Crowdsale, MintedCrowdsale, CappedCrowdsale, TimedCro
 
 contract PupperCoinSaleDeployer {
 
-    address public token_sale_address;
+    address public sale_address;
     address public token_address;
 
     constructor(
@@ -46,10 +46,10 @@ contract PupperCoinSaleDeployer {
         PupperCoin token = new PupperCoin(name, symbol, 0);
         token_address = address(token);
 
-        PupperCoinSale token_sale = new PupperCoinSale(1, "PupperCoin", "PUPP", wallet, now, now + 24 weeks, 18, token);
-        token_sale_address = address(token_sale);
+        PupperCoinSale token_sale = new PupperCoinSale(1, "PupperCoin", "PUPP", sale_address, now, now + 24 weeks, 18, token_address);
+        sale_address = address(token_sale);
 
-        token.addMinter(token_sale_address);
+        token.addMinter(sale_address);
         token.renounceMinter();
     }
 }
